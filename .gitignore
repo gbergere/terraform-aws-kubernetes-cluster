@@ -1,0 +1,11 @@
+*.retry
+*.pem
+
+# Vim
+*.swp
+
+# Terraform
+*.tfstate*
+.terraform
+*_override.tf
+terraform.tfvars

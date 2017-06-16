@@ -1,0 +1,49 @@
+#cloud-config
+
+write_files:
+  - path: "/var/lib/ssl/ca.pem"
+    permissions: "0644"
+    owner: "root"
+    content: |
+      ${replace(ca_pem, "\n", "\n      ")}
+  - path: "/var/lib/ssl/key.pem"
+    permissions: "0600"
+    owner: "root"
+    content: |
+      ${replace(key_pem, "\n", "\n      ")}
+  - path: "/var/lib/ssl/cert.pem"
+    permissions: "0644"
+    owner: "root"
+    content: |
+      ${replace(cert_pem, "\n", "\n      ")}
+
+coreos:  
+  update:
+    reboot-strategy: "off"
+  units:
+    - name: etcd.service
+      command: start
+      content: |
+        [Unit]
+        Description=etcd
+        Conflicts=etcd.service
+        Conflicts=etcd2.service
+        After=docker.service
+        
+        [Service]
+        Restart=on-failure
+        RestartSec=5s
+        TimeoutStartSec=0
+        
+        ExecStartPre=-/usr/bin/docker stop -t 15 etcd
+        ExecStartPre=-/usr/bin/docker rm -f etcd
+        ExecStart=/usr/bin/docker run -v /var/lib/ssl:/var/lib/ssl -v /var/lib/etcd:/var/lib/etcd -p 2379:2379 \
+            --name etcd quay.io/coreos/etcd:v3.1.6 etcd \
+            --listen-client-urls https://0.0.0.0:2379 \
+            --advertise-client-urls ${listen_client_urls} \
+            --client-cert-auth \
+            --trusted-ca-file=/var/lib/ssl/ca.pem \
+            --key-file=/var/lib/ssl/key.pem \
+            --cert-file=/var/lib/ssl/cert.pem \
+            --data-dir /var/lib/etcd 
+        ExecStop=/usr/bin/docker stop -t 15 etcd
