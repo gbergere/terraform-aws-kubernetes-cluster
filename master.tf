@@ -58,7 +58,12 @@ resource "tls_cert_request" "kubernetes" {
   key_algorithm   = "${tls_private_key.kubernetes.algorithm}"
   private_key_pem = "${tls_private_key.kubernetes.private_key_pem}"
 
-  dns_names    = ["api.${var.cluster_name}.${var.cluster_dns}"]
+  dns_names = [
+    "api.${var.cluster_name}.${var.cluster_dns}",
+    "kubernetes",
+    "kubernetes.default",
+  ]
+
   ip_addresses = ["10.0.0.1"]
 
   subject {
