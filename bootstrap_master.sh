@@ -259,5 +259,7 @@ curl https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addo
 curl https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-sa.yaml | /opt/bin/kubectl apply -f -
 curl https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-controller.yaml.sed | sed 's/$DNS_DOMAIN/cluster.local/g' | /opt/bin/kubectl apply -f - 
 curl https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kubedns-svc.yaml.sed | sed 's/$DNS_SERVER_IP/10.0.0.10/g' | /opt/bin/kubectl apply -f - 
+# Deploy Heapster
+/opt/bin/kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/standalone/heapster-controller.yaml
 # Deploy Kubernetes dashboard
 /opt/bin/kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml
