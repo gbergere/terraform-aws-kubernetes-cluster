@@ -25,6 +25,7 @@ resource "aws_instance" "master" {
   subnet_id            = "${aws_subnet.private.id}"
   key_name             = "${var.keypair}"
   iam_instance_profile = "${aws_iam_instance_profile.master.name}"
+  source_dest_check    = false
 
   root_block_device {
     volume_size           = "${var.master_disk_size}"
