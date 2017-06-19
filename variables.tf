@@ -44,6 +44,11 @@ variable "propagating_vgws" {
   default = []
 }
 
+variable "whitelisted_ips" {
+  type    = "list"
+  default = ["0.0.0.0/0"]
+}
+
 ###
 # EC2
 ##

@@ -25,7 +25,7 @@ resource "aws_security_group" "ec2" {
     to_port   = 6443
     protocol  = "tcp"
 
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.whitelisted_ips}"]
   }
 
   # Allow Kubernetes Services to be exposed (--server-node-port-range)
