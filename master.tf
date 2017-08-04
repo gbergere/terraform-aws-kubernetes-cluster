@@ -5,14 +5,14 @@ data "template_file" "bootstrap_master" {
   template = "${file("${path.module}/bootstrap_master.sh")}"
 
   vars {
-    cluster_name                = "${var.cluster_name}"
-    version                     = "${var.version}"
-    master_register_schedulable = "${var.master_register_schedulable}"
-    service_node_port_range     = "${var.service_node_port_range}"
-    etcd_url                    = "https://${aws_route53_record.etcd.fqdn}:2379"
-    ca_pem                      = "${tls_self_signed_cert.ca.cert_pem}"
-    cert_pem                    = "${tls_locally_signed_cert.kubernetes.cert_pem}"
-    key_pem                     = "${tls_private_key.kubernetes.private_key_pem}"
+    cluster_name            = "${var.cluster_name}"
+    version                 = "${var.version}"
+    kubelet_opts            = "${var.master_register_schedulable ? "" : "--register-with-taints node-role.kubernetes.io/master=:NoSchedule"}"
+    service_node_port_range = "${var.service_node_port_range}"
+    etcd_url                = "https://${aws_route53_record.etcd.fqdn}:2379"
+    ca_pem                  = "${tls_self_signed_cert.ca.cert_pem}"
+    cert_pem                = "${tls_locally_signed_cert.kubernetes.cert_pem}"
+    key_pem                 = "${tls_private_key.kubernetes.private_key_pem}"
   }
 }
 

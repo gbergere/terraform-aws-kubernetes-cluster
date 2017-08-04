@@ -57,6 +57,7 @@ ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests
 ExecStartPre=/usr/bin/mkdir -p /var/log/containers
 ExecStartPre=-/usr/bin/rkt rm --uuid-file=/var/run/kubelet-pod.uuid
 ExecStart=/usr/lib/coreos/kubelet-wrapper \
+  ${kubelet_opts} \
   --allow-privileged=true \
   --api-servers=http://127.0.0.1:8080 \
   --cloud-provider=aws \
@@ -65,9 +66,9 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --container-runtime=docker \
   --hostname-override=$FQDN \
   --network-plugin=kubenet \
+  --node-labels node-role.kubernetes.io/master= \
   --non-masquerade-cidr=10.10.0.0/16 \
-  --pod-manifest-path=/etc/kubernetes/manifests \
-  --register-schedulable=${master_register_schedulable}
+  --pod-manifest-path=/etc/kubernetes/manifests
 ExecStop=-/usr/bin/rkt stop --uuid-file=/var/run/kubelet-pod.uuid
 Restart=always
 RestartSec=10
