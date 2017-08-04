@@ -6,7 +6,7 @@ variable "cluster_name" {}
 variable "cluster_dns" {}
 
 variable "version" {
-  default = "v1.6.4"
+  default = "v1.6.7"
 }
 
 variable "master_register_schedulable" {
@@ -72,7 +72,7 @@ variable "master_instance_type" {
 }
 
 variable "master_disk_size" {
-  default = 8
+  default = 16
 }
 
 ###
@@ -83,5 +83,5 @@ variable "nodes_instance_type" {
 }
 
 variable "nodes_disk_size" {
-  default = 8
+  default = 32
 }
