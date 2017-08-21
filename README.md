@@ -10,9 +10,9 @@ Here is a kubernetes cluster module for terraform (to run on AWS).
 * Access to private subnet (VPN to reach instances in private subnets).
 * Security group to allow you to reach the instances in SSH.
 
-## How to use it
+## How To Use 
 
-### Inputs
+### Parameters
 
 #### Required
 * `cluster_name` Cluster name used by `KubernetesCluster` tags.
@@ -25,16 +25,12 @@ Here is a kubernetes cluster module for terraform (to run on AWS).
 * `keypair` Keypair to use to create instances.
 
 #### Optional
-* `propagating_vgws`(array) Virtual Gateway to import routes in the route table.
-* `whitelisted_ips` (array) Blocks CIDR to allow to reach kube-apiserver (default `0.0.0.0/0`).
-* `additional_security_groups` (array) Additional security groups to apply to all instances.
+* `propagating_vgws`(List) Virtual Gateway to import routes in the route table.
+* `whitelisted_ips` (List) Blocks CIDR to allow to reach kube-apiserver (default `0.0.0.0/0`).
+* `additional_security_groups` (List) Additional security groups to apply to all instances.
 
-### Example
+### Sample
 ```hcl
-    provider "aws" {                         
-      region = "eu-west-1"
-    }
-        
     module "k8s_cluster" {
       source = "github.com/gbergere/terraform-aws-kubernetes-cluster"
     
